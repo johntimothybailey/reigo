@@ -38,7 +38,15 @@
             ></v-rating>
           </v-card-title>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat nuxt to="/inspire">Run the numbers</v-btn>
+          <v-btn v-if="!isLoading" 
+            color="primary"
+            v-on:click="run" 
+          >Run the numbers</v-btn>
+          <v-progress-circular
+            v-if="isLoading"
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -46,13 +54,14 @@
 </template>
 
 <script>
-import {VForm, VTextField, VRating} from 'vuetify'
+import {VForm, VTextField, VRating, VProgressCircular} from 'vuetify'
 export default {
   name: 'Home',
   components: {
     VForm,
     VTextField,
-    VRating
+    VRating,
+    VProgressCircular
   },
   data: () => {
     return {
@@ -62,7 +71,17 @@ export default {
       sqft: null,
       year: null,
       purchasePrice: null,
-      rating: 0
+      rating: 0,
+      isLoading: false
+    }
+  },
+  methods: {
+    run () {
+      this.isLoading = true
+      setTimeout(() => {
+        this.isLoading = false
+        this.rating = Math.floor(Math.random() * (10 - 1))
+      }, 2000)
     }
   }
 }
